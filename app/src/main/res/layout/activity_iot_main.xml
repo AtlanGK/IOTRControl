@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="主页面"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+        <FrameLayout
+            android:id="@+id/homepage_top_header_setting_fr"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:focusableInTouchMode="true">
+
+            <ImageView
+                android:id="@+id/homepage_top_header_setting_bg"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_30dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/settingpage_cur_bg" />
+
+            <LinearLayout
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="31dp"
+                    android:src="@drawable/setting_icon" />
+
+                <TextView
+                    android:id="@+id/homepage_top_header_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center"
+                    android:text="@string/setting"
+                    android:textColor="@color/color_ededed"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/activity_iot_main_left_ll"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:gravity="center"
+                android:text="主题1"
+                android:textSize="20sp"
+                android:background="#66000000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_iot_main_right_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:background="#11000000">
+
+                <TextView
+                    android:id="@+id/activity_iot_main_right_tv0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:text="投影"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/activity_iot_main_right_tv1"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/activity_iot_main_right_tv0"
+                    android:background="@drawable/border_12dp_3c7eff"
+                    android:gravity="center"
+                    android:text="开"
+                    android:textColor="@color/color_ededed"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/activity_iot_main_right_tv2"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/activity_iot_main_right_tv1"
+                    android:background="@drawable/border_12dp_3c7eff"
+                    android:gravity="center"
+                    android:text="关"
+                    android:textColor="@color/color_ededed"
+                    android:textSize="20sp" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
