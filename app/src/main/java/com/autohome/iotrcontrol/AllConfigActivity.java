@@ -17,7 +17,7 @@ import com.autohome.iotrcontrol.data.MQTTBean;
 import com.autohome.iotrcontrol.data.UDPBean;
 import com.autohome.iotrcontrol.util.MQTTManager;
 
-public class ConfigActivity extends Activity implements View.OnClickListener{
+public class AllConfigActivity extends Activity implements View.OnClickListener{
 
     private Context mContext;
     private RelativeLayout mBack;
