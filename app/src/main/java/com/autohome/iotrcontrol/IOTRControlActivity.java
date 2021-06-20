@@ -73,7 +73,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         switch (v.getId()) {
             case R.id.homepage_top_header_setting_fr:
                 Intent intent = new Intent();
-                intent.setClass(mContext, ConfigActivity.class);
+                intent.setClass(mContext, AllConfigActivity.class);
                 startActivity(intent);
                 break;
             case R.id.activity_iot_main_right_tv1:
