@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.data.DataManager;
+import com.autohome.iotrcontrol.util.MQTTManager;
 import com.autohome.iotrcontrol.util.UDPUtils;
 
 public class IOTRControlActivity extends Activity implements View.OnClickListener{
@@ -55,9 +56,15 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     }
 
     @Override
+    public void onDestroy(){
+        MQTTManager.getInstance().closeMQTT();
+        super.onDestroy();
+    }
+    @Override
     public void onClick(View v) {
         String serverIp;
         int serverPort;
+        String clientId;
         switch (v.getId()) {
             case R.id.homepage_top_header_setting_fr:
                 Intent intent = new Intent();
@@ -65,43 +72,95 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.activity_iot_main_right_tv1:
-                serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
-                serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
-                if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
-                    udpUtils = new UDPUtils(serverIp, serverPort);
-                    clickResponse("点击投影打开");
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            if (udpUtils != null) {
-                                udpUtils.sendControInfo("_Projector_on_");
-                            } else {
-                                //log message
+                if(DataManager.getInstance().getType() == 0) {
+                    if(null == DataManager.getInstance().getmUdpBean()){
+                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
+                    serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
+                    if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
+                        udpUtils = new UDPUtils(serverIp, serverPort);
+                        clickResponse("点击投影打开");
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                if (udpUtils != null) {
+                                    udpUtils.sendControInfo("_Projector_on_");
+                                } else {
+                                    //log message
+                                }
                             }
-                        }
-                    }.start();
+                        }.start();
+                    } else {
+                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(mContext,"需要先配置udp参数才能发送数据",Toast.LENGTH_SHORT).show();
+                    if(null == DataManager.getInstance().getmMqttBean()){
+                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
+                    serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
+                    clientId = DataManager.getInstance().getmMqttBean().clientId;
+                    if(!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
+                        MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                MQTTManager.getInstance().startSendMQTT();
+                                MQTTManager.getInstance().sendMessage("Projector","on");
+                            }
+                        }.start();
+                    }else{
+                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case R.id.activity_iot_main_right_tv2:
-                serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
-                serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
-                if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
-                    udpUtils = new UDPUtils(serverIp, serverPort);
-                    clickResponse("点击投影关闭");
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            if (udpUtils != null) {
-                                udpUtils.sendControInfo("_Projector_off_");
-                            } else {
-                                //log message
+                if(DataManager.getInstance().getType() == 0) {
+                    if(null == DataManager.getInstance().getmUdpBean()){
+                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
+                    serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
+                    if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
+                        udpUtils = new UDPUtils(serverIp, serverPort);
+                        clickResponse("点击投影关闭");
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                if (udpUtils != null) {
+                                    udpUtils.sendControInfo("_Projector_off_");
+                                } else {
+                                    //log message
+                                }
                             }
-                        }
-                    }.start();
+                        }.start();
+                    } else {
+                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(mContext,"需要先配置udp参数才能发送数据",Toast.LENGTH_SHORT).show();
+                    if(null == DataManager.getInstance().getmMqttBean()){
+                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
+                    serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
+                    clientId = DataManager.getInstance().getmMqttBean().clientId;
+                    if(!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
+                        MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                MQTTManager.getInstance().startSendMQTT();
+                                MQTTManager.getInstance().sendMessage("Projector","off");
+                            }
+                        }.start();
+                    }else{
+                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             default:
