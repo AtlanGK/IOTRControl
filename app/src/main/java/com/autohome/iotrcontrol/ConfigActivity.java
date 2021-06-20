@@ -2,6 +2,7 @@ package com.autohome.iotrcontrol;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +21,7 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
 
     private Context mContext;
     private RelativeLayout mBack;
-    private TextView mUpdTv,mMqttTv;
+    private TextView mUpdTv,mMqttTv,mEditTv;
     private TextView mConfirm,mCancel;
     private LinearLayout mUdpContainer;
     private LinearLayout mMqttContainer;
@@ -42,6 +43,7 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
         mBack = findViewById(R.id.config_top_header_back_rl);
         mUpdTv = findViewById(R.id.config_udp_tv);
         mMqttTv = findViewById(R.id.config_mqtt_tv);
+        mEditTv = findViewById(R.id.config_jump_to_edit_tv);
         mUdpContainer = findViewById(R.id.config_mid_udp_ll);
         mMqttContainer = findViewById(R.id.config_mid_mqtt_ll);
         mConfirm = findViewById(R.id.config_bottom_confirm_tv);
@@ -56,6 +58,7 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
         mBack.setOnClickListener(this);
         mUpdTv.setOnClickListener(this);
         mMqttTv.setOnClickListener(this);
+        mEditTv.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
         mCancel.setOnClickListener(this);
         state = DataManager.getInstance().getType();
@@ -126,6 +129,11 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
                 state = 1;
                 mUdpContainer.setVisibility(View.GONE);
                 mMqttContainer.setVisibility(View.VISIBLE);
+                break;
+            case R.id.config_jump_to_edit_tv:
+                Intent intent = new Intent();
+                intent.setClass(mContext,xuanxiangActivity.class);
+                startActivity(intent);
                 break;
             case R.id.config_bottom_confirm_tv:
                 saveEditInfoConfirm();

@@ -82,6 +82,23 @@
                 android:textColor="@color/color_ededed"
                 android:textSize="12sp" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/config_jump_to_edit_tv"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/border_12dp_3c7eff"
+                android:gravity="center"
+                android:text="编辑场馆功能"
+                android:textColor="@color/color_ededed"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/config_mid_udp_ll"
