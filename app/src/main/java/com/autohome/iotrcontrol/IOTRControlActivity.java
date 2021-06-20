@@ -29,6 +29,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.activity_iot_main);
         mContext = this;
         initView();
+        initdefaultConfig();
     }
 
     private void initView() {
@@ -38,6 +39,10 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         mSetting.setOnClickListener(this);
         mTv1Open.setOnClickListener(this);
         mTv1Close.setOnClickListener(this);
+    }
+
+    private void initdefaultConfig() {
+        //从sp读出上次配置，并初始化mqtt client
     }
 
     private void clickResponse(String msg) {
@@ -100,21 +105,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
                         Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
-                    serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
-                    clientId = DataManager.getInstance().getmMqttBean().clientId;
-                    if(!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
-                        MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                MQTTManager.getInstance().startSendMQTT();
-                                MQTTManager.getInstance().sendMessage("Projector","on");
-                            }
-                        }.start();
-                    }else{
-                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
-                    }
+                    MQTTManager.getInstance().sendMessage("Projector","on");
                 }
                 break;
             case R.id.activity_iot_main_right_tv2:
@@ -146,21 +137,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
                         Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
-                    serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
-                    clientId = DataManager.getInstance().getmMqttBean().clientId;
-                    if(!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
-                        MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                MQTTManager.getInstance().startSendMQTT();
-                                MQTTManager.getInstance().sendMessage("Projector","off");
-                            }
-                        }.start();
-                    }else{
-                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
-                    }
+                    MQTTManager.getInstance().sendMessage("Projector","off");
                 }
                 break;
             default:

@@ -3,6 +3,7 @@ package com.autohome.iotrcontrol;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.MQTTBean;
 import com.autohome.iotrcontrol.data.UDPBean;
+import com.autohome.iotrcontrol.util.MQTTManager;
 
 public class ConfigActivity extends Activity implements View.OnClickListener{
 
@@ -90,6 +92,18 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
             DataManager.getInstance().isInited = true;
             DataManager.getInstance().setType(1);
             Toast.makeText(mContext,"MQTT配置保存成功，数据："+mqttBean.toString(),Toast.LENGTH_SHORT).show();
+            String serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
+            int serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
+            String clientId = DataManager.getInstance().getmMqttBean().clientId;
+            if(!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
+                MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        MQTTManager.getInstance().startSendMQTT();
+                    }
+                }.start();
+            }
         }
 
     }

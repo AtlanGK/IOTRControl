@@ -5,7 +5,7 @@ public class DataManager {
 
     private UDPBean mUdpBean;
     private MQTTBean mMqttBean;
-    private int Type = 1;//0:udp,1:mqtt
+    private int Type = 0;//0:udp,1:mqtt
     public boolean isInited = false;
 
     public DataManager(){}
