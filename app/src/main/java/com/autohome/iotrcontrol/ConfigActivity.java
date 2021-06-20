@@ -56,9 +56,16 @@ public class ConfigActivity extends Activity implements View.OnClickListener{
         mMqttTv.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
         mCancel.setOnClickListener(this);
-        mUdpContainer.setVisibility(View.VISIBLE);
-        mMqttContainer.setVisibility(View.GONE);
-        state = 0;
+        state = DataManager.getInstance().getType();
+        if(state == 0){
+            mUdpContainer.setVisibility(View.VISIBLE);
+            mMqttContainer.setVisibility(View.GONE);
+        }else{
+            mUdpContainer.setVisibility(View.GONE);
+            mMqttContainer.setVisibility(View.VISIBLE);
+        }
+        String toastmsg = DataManager.getInstance().getType() == 0 ?"当前udp模式":"当前mqtt模式";
+        Toast.makeText(mContext,toastmsg,Toast.LENGTH_SHORT).show();
     }
 
     private void saveEditInfoConfirm() {
