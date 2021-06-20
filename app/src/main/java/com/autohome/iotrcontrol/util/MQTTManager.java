@@ -119,8 +119,8 @@ public class MQTTManager {
      * 订阅Topic
      */
     private void subscribeFilter() {
-        String registerTopic = "";//自定义
-        String controlTopic = "";//自定义，作为示例订阅了两个
+        String registerTopic = "Test1";//自定义
+        String controlTopic = "Test2";//自定义，作为示例订阅了两个
         String[] topicFilters = new String[]{registerTopic, controlTopic};
 
         try {
