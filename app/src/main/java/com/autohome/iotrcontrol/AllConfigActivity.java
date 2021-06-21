@@ -23,6 +23,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
     private RelativeLayout mBack;
     private TextView mUpdTv,mMqttTv,mEditTv;
     private TextView mConfirm,mCancel;
+    private TextView mCurrentType;
     private LinearLayout mUdpContainer;
     private LinearLayout mMqttContainer;
     private EditText mUdpIpAddressEd,mUdpPortEd;
@@ -55,6 +56,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
         mMqttClientIDEd = findViewById(R.id.config_mqtt_clientid_ed);
         mMqttUsernameEd = findViewById(R.id.config_mqtt_username_ed);
         mMqttPasswordEd = findViewById(R.id.config_mqtt_password_ed);
+        mCurrentType = findViewById(R.id.config_current_mode_tv);
         mBack.setOnClickListener(this);
         mUpdTv.setOnClickListener(this);
         mMqttTv.setOnClickListener(this);
@@ -65,12 +67,12 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
         if(state == 0){
             mUdpContainer.setVisibility(View.VISIBLE);
             mMqttContainer.setVisibility(View.GONE);
+            mCurrentType.setText("当前UDP生效");
         }else{
             mUdpContainer.setVisibility(View.GONE);
             mMqttContainer.setVisibility(View.VISIBLE);
+            mCurrentType.setText("当前MQTT生效");
         }
-        String toastmsg = DataManager.getInstance().getType() == 0 ?"当前udp模式":"当前mqtt模式";
-        Toast.makeText(mContext,toastmsg,Toast.LENGTH_SHORT).show();
     }
 
     private void saveEditInfoConfirm() {
@@ -78,10 +80,15 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             UDPBean udpBean = new UDPBean();
             udpBean.ipAddress = mUdpIpAddressEd.getText().toString();
             udpBean.port = mUdpPortEd.getText().toString();
+            if(!isCheckUdpValid(udpBean)){
+                Toast.makeText(mContext,"UDP配置参数不合法"+udpBean.toString(),Toast.LENGTH_SHORT).show();
+                return;
+            }
             DataManager.getInstance().setUdpBean(udpBean);
             DataManager.getInstance().isInited = true;
             DataManager.getInstance().setType(0);
             Toast.makeText(mContext,"UDP配置保存成功，数据："+udpBean.toString(),Toast.LENGTH_SHORT).show();
+            mCurrentType.setText("当前UDP生效");
 
         }else if(state == 1){
             MQTTBean mqttBean = new MQTTBean();
@@ -90,11 +97,16 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             mqttBean.clientId = mMqttClientIDEd.getText().toString();
             mqttBean.userName = mMqttUsernameEd.getText().toString();
             mqttBean.passWord = mMqttPasswordEd.getText().toString();
+            if(!isCheckMqttValid(mqttBean)){
+                Toast.makeText(mContext,"MQTT配置参数不合法"+mqttBean.toString(),Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             DataManager.getInstance().setMqttBean(mqttBean);
             DataManager.getInstance().isInited = true;
             DataManager.getInstance().setType(1);
             Toast.makeText(mContext,"MQTT配置保存成功，数据："+mqttBean.toString(),Toast.LENGTH_SHORT).show();
+            mCurrentType.setText("当前MQTT生效");
             String serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
             int serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
             String clientId = DataManager.getInstance().getmMqttBean().clientId;
@@ -109,6 +121,29 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             }
         }
 
+    }
+
+    private boolean isCheckUdpValid(UDPBean udpBean) {
+        if(udpBean == null)
+            return false;
+        if(TextUtils.isEmpty(udpBean.ipAddress))
+            return false;
+        if(TextUtils.isEmpty(udpBean.port))
+            return false;
+        return true;
+    }
+
+    private boolean isCheckMqttValid(MQTTBean mqttBean) {
+        if(mqttBean == null)
+            return false;
+        if(TextUtils.isEmpty(mqttBean.ipAddress))
+            return false;
+        if(TextUtils.isEmpty(mqttBean.port))
+            return false;
+        if(TextUtils.isEmpty(mqttBean.clientId))
+            return false;
+
+            return true;
     }
 
     @Override
