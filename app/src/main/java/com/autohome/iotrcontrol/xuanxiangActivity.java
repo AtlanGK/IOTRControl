@@ -14,7 +14,6 @@ import com.autohome.iotrcontrol.util.LogUtil;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class xuanxiangActivity extends Activity implements View.OnClickListener{

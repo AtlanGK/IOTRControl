@@ -132,7 +132,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.config_jump_to_edit_tv:
                 Intent intent = new Intent();
-                intent.setClass(mContext,xuanxiangActivity.class);
+                intent.setClass(mContext,zhutiActivity.class);
                 startActivity(intent);
                 break;
             case R.id.config_bottom_confirm_tv:

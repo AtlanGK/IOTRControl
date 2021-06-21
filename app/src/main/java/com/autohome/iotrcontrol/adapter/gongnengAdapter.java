@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.autohome.iotrcontrol.R;
-import com.autohome.iotrcontrol.data.zhutiBean;
-import com.autohome.iotrcontrol.gongnengActivity;
+import com.autohome.iotrcontrol.data.gongnengBean;
+import com.autohome.iotrcontrol.xuanxiangActivity;
 import com.autohome.iotrcontrol.xuanxiangConfigActivity;
 
 import java.util.ArrayList;
@@ -17,37 +17,37 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<zhutiBean> mDatas;
+    private ArrayList<gongnengBean> mDatas;
 
-    public zhutiAdapter(Context context) {
+    public gongnengAdapter(Context context) {
         mContext = context;
         mDatas = new ArrayList<>();
     }
-    public zhutiAdapter(Context context, ArrayList<zhutiBean> datas) {
+    public gongnengAdapter(Context context, ArrayList<gongnengBean> datas) {
         mContext = context;
         mDatas = datas;
     }
 
-    public ArrayList<zhutiBean> getmDatas() {
+    public ArrayList<gongnengBean> getmDatas() {
         return mDatas;
     }
 
-    public void setmDatas(ArrayList<zhutiBean> datas) {
+    public void setmDatas(ArrayList<gongnengBean> datas) {
         this.mDatas = datas;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, false);
-        return new zhutiViewHolder(itemView);
+        return new gongnengViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        zhutiViewHolder normalHolder = (zhutiViewHolder) holder;
+        gongnengViewHolder normalHolder = (gongnengViewHolder) holder;
         normalHolder.mTV.setTag(mDatas.get(position));
         normalHolder.mTV.setText(mDatas.get(position).getName());
     }
@@ -57,21 +57,21 @@ public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return mDatas.size();
     }
 
-    public class zhutiViewHolder extends RecyclerView.ViewHolder{
+    public class gongnengViewHolder extends RecyclerView.ViewHolder{
         public TextView mTV;
 
-        public zhutiViewHolder(View itemView) {
+        public gongnengViewHolder(View itemView) {
             super(itemView);
 
             mTV = (TextView) itemView.findViewById(R.id.item_title_tv);
             mTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mTV.getTag() instanceof zhutiBean){
-                        zhutiBean mItemData = (zhutiBean) mTV.getTag();
+                    if(mTV.getTag() instanceof gongnengBean){
+                        gongnengBean mItemData = (gongnengBean) mTV.getTag();
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
-                        intent.setClass(mContext, gongnengActivity.class);
+                        intent.setClass(mContext, xuanxiangActivity.class);
                         mContext.startActivity(intent);
                     }
 
