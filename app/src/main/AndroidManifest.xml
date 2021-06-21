@@ -26,6 +26,7 @@
         <activity android:name=".xuanxiangActivity"></activity>
         <activity android:name=".zhutiActivity"></activity>
         <activity android:name=".gongnengActivity"></activity>
+        <activity android:name=".xuanxiangConfigActivity"></activity>
 
     </application>
 

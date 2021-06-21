@@ -30,11 +30,18 @@ public class xuanxiangConfigActivity extends Activity implements View.OnClickLis
         mMqttTopic = findViewById(R.id.activity_xuanxiang_config_mqtt_topic);
         mMqttMessage = findViewById(R.id.activity_xuanxiang_config_mqtt_msg);
 
+        mBack.setOnClickListener(this);
+        mConfirm.setOnClickListener(this);
+        mCancel.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.activity_xuanxiang_config_top_back:
+                finish();
+                break;
             case R.id.activity_xuanxiang_config_bottom_confirm_tv:
                 //todo
                 break;

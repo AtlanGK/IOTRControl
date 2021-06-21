@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.autohome.iotrcontrol.R;
 import com.autohome.iotrcontrol.data.xuanxiangBean;
+import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.xuanxiangConfigActivity;
 
 import java.util.ArrayList;
@@ -16,16 +17,16 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<xuanxiangBean> mDatas;
 
-    public xuanxiangAdapter(Context context) {
+    public zhutiAdapter(Context context) {
         mContext = context;
         mDatas = new ArrayList<>();
     }
-    public xuanxiangAdapter(Context context, ArrayList<xuanxiangBean> datas) {
+    public zhutiAdapter(Context context, ArrayList<xuanxiangBean> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -41,12 +42,12 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, false);
-        return new xuanxiangViewHolder(itemView);
+        return new zhutiViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        xuanxiangViewHolder normalHolder = (xuanxiangViewHolder) holder;
+        zhutiViewHolder normalHolder = (zhutiViewHolder) holder;
         normalHolder.mTV.setTag(mDatas.get(position));
         normalHolder.mTV.setText(mDatas.get(position).getName());
     }
@@ -56,18 +57,18 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mDatas.size();
     }
 
-    public class xuanxiangViewHolder extends RecyclerView.ViewHolder{
+    public class zhutiViewHolder extends RecyclerView.ViewHolder{
         public TextView mTV;
 
-        public xuanxiangViewHolder(View itemView) {
+        public zhutiViewHolder(View itemView) {
             super(itemView);
 
             mTV = (TextView) itemView.findViewById(R.id.item_title_tv);
             mTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mTV.getTag() instanceof xuanxiangBean){
-                        xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                    if(mTV.getTag() instanceof zhutiBean){
+                        zhutiBean mItemData = (zhutiBean) mTV.getTag();
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setClass(mContext, xuanxiangConfigActivity.class);
