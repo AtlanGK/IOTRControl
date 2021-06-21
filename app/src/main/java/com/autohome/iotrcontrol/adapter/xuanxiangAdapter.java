@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.R;
+import com.autohome.iotrcontrol.data.xuanxiangBean;
+import com.autohome.iotrcontrol.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -17,11 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> mDatas;
+    private ArrayList<xuanxiangBean> mDatas;
 
-    public xuanxiangAdapter(Context context, ArrayList<String> datas) {
+    public xuanxiangAdapter(Context context) {
+        mContext = context;
+        mDatas = new ArrayList<>();
+    }
+    public xuanxiangAdapter(Context context, ArrayList<xuanxiangBean> datas) {
         mContext = context;
         mDatas = datas;
+    }
+
+    public ArrayList<xuanxiangBean> getmDatas() {
+        return mDatas;
+    }
+
+    public void setmDatas(ArrayList<xuanxiangBean> datas) {
+        this.mDatas = datas;
     }
 
     @Override
@@ -33,7 +47,7 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         NormalHolder normalHolder = (NormalHolder) holder;
-        normalHolder.mTV.setText(mDatas.get(position));
+        normalHolder.mTV.setText(mDatas.get(position).getName());
     }
 
     @Override
@@ -47,7 +61,7 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public NormalHolder(View itemView) {
             super(itemView);
 
-            mTV = (TextView) itemView.findViewById(R.id.item_tv);
+            mTV = (TextView) itemView.findViewById(R.id.item_title_tv);
             mTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
