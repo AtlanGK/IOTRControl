@@ -1,12 +1,15 @@
 package com.autohome.iotrcontrol.data;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class zhutiBean implements recyclerListItemBean{
     String name;
+    public String uid;
     ArrayList<gongnengBean> gongnengBeans;
     public zhutiBean(String na){
         name = na;
+        uid = UUID.randomUUID().toString();
     }
 
     public String getName() {
