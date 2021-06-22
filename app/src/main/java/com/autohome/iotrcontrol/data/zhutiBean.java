@@ -9,6 +9,7 @@ public class zhutiBean implements recyclerListItemBean{
     ArrayList<gongnengBean> gongnengBeans;
     public zhutiBean(String na){
         name = na;
+        gongnengBeans = new ArrayList<>();
         uid = UUID.randomUUID().toString();
     }
 

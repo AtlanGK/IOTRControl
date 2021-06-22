@@ -1,13 +1,17 @@
 package com.autohome.iotrcontrol.data;
 
+import java.util.UUID;
+
 public class xuanxiangBean implements recyclerListItemBean{
     String name;
     String udpMessage;
     String mqttTopic;
     String mqttMessage;
+    public String uid;
 
     public xuanxiangBean(String na){
         name = na;
+        uid = UUID.randomUUID().toString();
     }
 
     public String getName() {
