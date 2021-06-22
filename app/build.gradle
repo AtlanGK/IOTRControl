@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion 28
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.autohome.iotrcontrol"
         minSdkVersion 21
         targetSdkVersion 28
