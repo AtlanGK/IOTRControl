@@ -5,11 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.autohome.iotrcontrol.adapter.zhutiAdapter;
+import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.recyclerListItemBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.util.LogUtil;
+import com.autohome.iotrcontrol.util.SpHelper;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class zhutiActivity extends Activity implements View.OnClickListener{
     private ArrayList<recyclerListItemBean> mZhuTiBeans;
     private zhutiAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    ArrayList<zhutiBean> mZhutiBeans = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class zhutiActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_zhuti);
         mContext = this;
         initView();
+        initData();
     }
 
     private void initView() {
@@ -44,8 +49,15 @@ public class zhutiActivity extends Activity implements View.OnClickListener{
         mConfirm.setOnClickListener(this);
         mCancel.setOnClickListener(this);
         mAdd.setOnClickListener(this);
+    }
 
-        mAdapter = new zhutiAdapter(mContext);
+    private void initData() {
+        mZhutiBeans = DataManager.getInstance().getZhutiBeans();
+        if(mZhutiBeans != null && mZhutiBeans.size() >0){
+            mAdapter = new zhutiAdapter(mContext,mZhutiBeans);
+        }else {
+            mAdapter = new zhutiAdapter(mContext);
+        }
         //创建线性布局
         mLayoutManager = new LinearLayoutManager(this);
         //垂直方向
@@ -80,6 +92,8 @@ public class zhutiActivity extends Activity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.activity_zhuti_bottom_confirm_tv:
+                DataManager.getInstance().commitZhutiBeans(mAdapter.getmDatas());
+                Toast.makeText(mContext,"保存成功 数据长度=="+mAdapter.getmDatas().size(),Toast.LENGTH_SHORT).show();
                 break;
             case R.id.activity_zhuti_bottom_cancel_tv:
                 break;

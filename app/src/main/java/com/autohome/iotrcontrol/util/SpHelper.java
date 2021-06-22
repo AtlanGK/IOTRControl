@@ -7,6 +7,7 @@ import com.autohome.iotrcontrol.util.preference.AHPreferenceUtil;
 
 public class SpHelper {
     public static final String IOTRCONTROL = "iotrcontrol";
+    public static final String ACTIVITY_ZHUTIBEANS = "activity_zhutibeans";
     private static SharedPreferences mySharedPreferences = AHPreferenceUtil.getSharedPreference(MyApplication.getContext(), IOTRCONTROL);
 
     public static String getString(String key) {

@@ -3,6 +3,8 @@ package com.autohome.iotrcontrol;
 import android.app.Application;
 import android.content.Context;
 
+import com.autohome.iotrcontrol.data.DataManager;
+
 public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static MyApplication sInstance;
@@ -16,6 +18,8 @@ public class MyApplication extends Application {
         super.onCreate();
 //        MultiDex.install(this);
         sContext = getApplicationContext();
+        //启动读取sp的存储值
+        DataManager.getInstance().getSpZhutiBeanData();
     }
 
     public static Context getContext() {
