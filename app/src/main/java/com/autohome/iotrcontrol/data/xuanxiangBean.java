@@ -1,8 +1,9 @@
 package com.autohome.iotrcontrol.data;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class xuanxiangBean implements recyclerListItemBean{
+public class xuanxiangBean implements recyclerListItemBean, Serializable {
     String name;
     String udpMessage;
     String mqttTopic;

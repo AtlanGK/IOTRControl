@@ -22,6 +22,7 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
 
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private zhutiBean mBelongZhuti;
     private TextView mTitle,mBack,mConfirm,mCancel,mAdd;
     private ArrayList<recyclerListItemBean> mGongNengBeans;
     private gongnengAdapter mAdapter;
@@ -33,6 +34,7 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_gongneng);
         mContext = this;
         initView();
+        initData();
     }
 
     private void initView() {
@@ -56,6 +58,12 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
         //给RecyclerView设置布局管理器
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void initData() {
+        mBelongZhuti = (zhutiBean) getIntent().getSerializableExtra("zhuti");
+        mAdapter.setmBelongZhuti(mBelongZhuti);
+        LogUtil.d("gktest","传入的主题bean ="+mBelongZhuti.toString());
     }
 
     public static int count = 0;

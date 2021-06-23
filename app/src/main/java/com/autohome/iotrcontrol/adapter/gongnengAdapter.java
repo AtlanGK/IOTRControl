@@ -23,6 +23,7 @@ public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context mContext;
     private ArrayList<gongnengBean> mDatas;
+    private zhutiBean mBelongZhuti;
 
     public gongnengAdapter(Context context) {
         mContext = context;
@@ -39,6 +40,14 @@ public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setmDatas(ArrayList<gongnengBean> datas) {
         this.mDatas = datas;
+    }
+
+    public zhutiBean getmBelongZhuti() {
+        return mBelongZhuti;
+    }
+
+    public void setmBelongZhuti(zhutiBean mBelongZhuti) {
+        this.mBelongZhuti = mBelongZhuti;
     }
 
     @Override

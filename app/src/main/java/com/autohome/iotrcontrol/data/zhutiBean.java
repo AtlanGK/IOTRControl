@@ -4,10 +4,11 @@ package com.autohome.iotrcontrol.data;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class zhutiBean implements recyclerListItemBean{
+public class zhutiBean implements recyclerListItemBean, Serializable{
     String name;
     public String uid;
     ArrayList<gongnengBean> gongnengBeans;

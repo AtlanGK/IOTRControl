@@ -1,9 +1,10 @@
 package com.autohome.iotrcontrol.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class gongnengBean implements recyclerListItemBean{
+public class gongnengBean implements recyclerListItemBean, Serializable {
     String name;
     ArrayList<xuanxiangBean> xuanxiangBeans;
     public String uid;
