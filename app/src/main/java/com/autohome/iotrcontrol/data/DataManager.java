@@ -61,6 +61,10 @@ public class DataManager {
     public void commitZhutiBeans(ArrayList<zhutiBean> data){
         mUserSavedData = data;
         //commit之后持久化存储
+        syncLocalDatas();
+    }
+
+    public void syncLocalDatas() {
         SpHelper.commitString(SpHelper.ACTIVITY_ZHUTIBEANS,""+zhutiBeanToStr());
     }
 

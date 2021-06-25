@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.autohome.iotrcontrol.adapter.gongnengAdapter;
 import com.autohome.iotrcontrol.adapter.zhutiAdapter;
+import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.recyclerListItemBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
@@ -24,7 +26,7 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
     private RecyclerView mRecyclerView;
     private zhutiBean mBelongZhuti;
     private TextView mTitle,mBack,mConfirm,mCancel,mAdd;
-    private ArrayList<recyclerListItemBean> mGongNengBeans;
+    private ArrayList<gongnengBean> mGongNengBeans;
     private gongnengAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
@@ -50,7 +52,19 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
         mCancel.setOnClickListener(this);
         mAdd.setOnClickListener(this);
 
-        mAdapter = new gongnengAdapter(mContext);
+
+    }
+
+    private void initData() {
+        mBelongZhuti = (zhutiBean) getIntent().getSerializableExtra("zhuti");
+        LogUtil.d("gktest","传入的主题bean ="+mBelongZhuti.toString());
+        mGongNengBeans = findMatchGongnengBeans();
+        if(null != mGongNengBeans && mGongNengBeans.size() >0) {
+            mAdapter = new gongnengAdapter(mContext,mGongNengBeans);
+        }else{
+            mAdapter = new gongnengAdapter(mContext);
+        }
+        mAdapter.setmBelongZhuti(mBelongZhuti);
         //创建线性布局
         mLayoutManager = new LinearLayoutManager(this);
         //垂直方向
@@ -60,10 +74,13 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void initData() {
-        mBelongZhuti = (zhutiBean) getIntent().getSerializableExtra("zhuti");
-        mAdapter.setmBelongZhuti(mBelongZhuti);
-        LogUtil.d("gktest","传入的主题bean ="+mBelongZhuti.toString());
+    private ArrayList<gongnengBean> findMatchGongnengBeans() {
+        int findMatchPos = findMatchGongnengBeanPos();
+        if(findMatchPos != -1){
+            return DataManager.getInstance().getZhutiBeans().get(findMatchPos).getGongnengBeans();
+        }else{
+            return null;
+        }
     }
 
     public static int count = 0;
@@ -91,6 +108,8 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.activity_gongneng_bottom_confirm_tv:
+                saveGongnengToBelongZhuti();
+                Toast.makeText(mContext,"保存成功 数据长度=="+mAdapter.getmDatas().size(),Toast.LENGTH_SHORT).show();
                 break;
             case R.id.activity_gongneng_bottom_cancel_tv:
                 break;
@@ -100,5 +119,27 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+    private void saveGongnengToBelongZhuti() {
+        int findMatchPos = -1;
+        findMatchPos = findMatchGongnengBeanPos();
+        if(findMatchPos != -1) {
+            //找到了match 主题数据，设置功能bean，并保存
+            DataManager.getInstance().getZhutiBeans().get(findMatchPos).setGongnengBeans(mAdapter.getmDatas());
+            DataManager.getInstance().syncLocalDatas();
+        }
+    }
+
+    private int findMatchGongnengBeanPos() {
+        int findMatchPos = -1;
+        int spZhutiLength = DataManager.getInstance().getZhutiBeans().size();
+        for(int i = 0;i < spZhutiLength;i++){
+            String spItemUid = DataManager.getInstance().getZhutiBeans().get(i).getUid();
+            if(spItemUid.equals(mBelongZhuti.getUid())){
+                findMatchPos = i;
+            }
+        }
+        return findMatchPos;
     }
 }
