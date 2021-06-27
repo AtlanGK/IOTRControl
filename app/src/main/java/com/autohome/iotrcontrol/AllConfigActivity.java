@@ -150,6 +150,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.config_top_header_back_rl:
+                this.setResult(-1);
                 this.finish();
                 break;
             case R.id.config_udp_tv:
@@ -174,7 +175,8 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
                 saveEditInfoConfirm();
                 break;
             case R.id.config_bottom_cancel_tv:
-
+                this.setResult(-1);
+                this.finish();
                 Toast.makeText(mContext,"取消",Toast.LENGTH_SHORT).show();
                 //do cancel operation
                 break;

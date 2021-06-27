@@ -63,30 +63,24 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/activity_iot_main_left_ll"
+        <ScrollView
             android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="120dp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="主题1"-->
-<!--                android:textSize="20sp"-->
-<!--                android:background="#66000000"/>-->
+            android:layout_height="match_parent">
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/activity_iot_main_left_ll"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/activity_iot_main_right_ll"
+            </LinearLayout>
+        </ScrollView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_shouye_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-
-        </LinearLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

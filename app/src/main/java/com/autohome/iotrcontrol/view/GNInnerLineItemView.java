@@ -1,6 +1,8 @@
 package com.autohome.iotrcontrol.view;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -25,11 +27,22 @@ public class GNInnerLineItemView extends LinearLayout {
     String serverIp;
     int serverPort;
     private UDPUtils udpUtils;
+    private Handler mHandler;
+    private String mUdpmessage;
 
     public GNInnerLineItemView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_gn_inner_line_item, this, true);
         mContext = context;
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch(msg.what) {
+                    case 1:
+                        Toast.makeText(mContext, "发送udp参数 "+mUdpmessage, Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }}};
         mTV1 = findViewById(R.id.view_gn_inner_line_tv1);
         mTV2 = findViewById(R.id.view_gn_inner_line_tv2);
         mTV1.setOnClickListener(new OnClickListener() {
@@ -54,7 +67,8 @@ public class GNInnerLineItemView extends LinearLayout {
                                     if(!TextUtils.isEmpty(udpmessage)) {
                                         //点击发送udp message
                                         udpUtils.sendControInfo(udpmessage);
-                                        Toast.makeText(mContext, "发送udp参数 "+udpmessage, Toast.LENGTH_SHORT).show();
+                                        mUdpmessage = udpmessage;
+                                        mHandler.sendEmptyMessage(1);
                                     }
                                 } else {
                                     //log message
@@ -73,7 +87,6 @@ public class GNInnerLineItemView extends LinearLayout {
                     String mqttMessage = mXX1.getMqttMessage();
                     if(!TextUtils.isEmpty(mqttTopic) && !TextUtils.isEmpty(mqttMessage)) {
                         MQTTManager.getInstance().sendMessage(mqttTopic, mqttMessage);
-
                         Toast.makeText(mContext, "发送mqtt参数 "+mqttTopic + " " +mqttMessage, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -101,6 +114,8 @@ public class GNInnerLineItemView extends LinearLayout {
                                     if(!TextUtils.isEmpty(udpmessage)) {
                                         //点击发送udp message
                                         udpUtils.sendControInfo(udpmessage);
+                                        mUdpmessage = udpmessage;
+                                        mHandler.sendEmptyMessage(1);
                                     }
                                 } else {
                                     //log message
@@ -119,6 +134,7 @@ public class GNInnerLineItemView extends LinearLayout {
                     String mqttMessage = mXX2.getMqttMessage();
                     if(!TextUtils.isEmpty(mqttTopic) && !TextUtils.isEmpty(mqttMessage)) {
                         MQTTManager.getInstance().sendMessage(mqttTopic, mqttMessage);
+                        Toast.makeText(mContext, "发送mqtt参数 "+mqttTopic + " " +mqttMessage, Toast.LENGTH_SHORT).show();
                     }
                 }
             }

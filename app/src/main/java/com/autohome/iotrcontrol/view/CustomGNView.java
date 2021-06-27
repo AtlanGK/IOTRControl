@@ -30,6 +30,7 @@ public class CustomGNView extends RelativeLayout {
 
     public void setmData(gongnengBean mData) {
         this.mData = mData;
+        mContainer.removeAllViews();
         initRenderAndSetData();
     }
 

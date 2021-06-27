@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autohome.iotrcontrol.adapter.shouyeGNAdapter;
 import com.autohome.iotrcontrol.data.DataManager;
+import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.util.MQTTManager;
 import com.autohome.iotrcontrol.util.ScreenUtil;
@@ -21,12 +23,20 @@ import com.autohome.iotrcontrol.util.UDPUtils;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class IOTRControlActivity extends Activity implements View.OnClickListener{
 
     private FrameLayout mSetting;
     private Context mContext;
-    private LinearLayout mLeftLL,mRightContainer;
+    private LinearLayout mLeftLL;
+    private RecyclerView mRecyclerView;
+    private shouyeGNAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
     private ArrayList<zhutiBean> mZhutis;
+    private ArrayList<gongnengBean> mCurrentGongnengs;
+    private zhutiBean mCurrentZhuti;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +51,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         mSetting = findViewById(R.id.homepage_top_header_setting_fr);
         mSetting.setOnClickListener(this);
         mLeftLL = findViewById(R.id.activity_iot_main_left_ll);
-        mRightContainer = findViewById(R.id.activity_iot_main_right_ll);
-
+        mRecyclerView = findViewById(R.id.activity_shouye_recyclerview);
     }
 
     private void initdefaultConfig() {
@@ -52,9 +61,26 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     private void initData() {
         mZhutis = DataManager.getInstance().getZhutiBeans();
         renderLeftZhutiTvs();
+        if(null != mZhutis && mZhutis.size() >0) {
+            mCurrentZhuti= mZhutis.get(0);
+            mCurrentGongnengs = mZhutis.get(0).getGongnengBeans();
+        }
+        if(mCurrentGongnengs != null && mCurrentGongnengs.size() > 0){
+            mAdapter = new shouyeGNAdapter(mContext,mCurrentGongnengs);
+        }else{
+            mAdapter = new shouyeGNAdapter(mContext);
+        }
+        //创建线性布局
+        mLayoutManager = new LinearLayoutManager(this);
+        //垂直方向
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        //给RecyclerView设置布局管理器
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void renderLeftZhutiTvs() {
+        mLeftLL.removeAllViews();
         for(int i = 0;i < mZhutis.size();i++){
             TextView tv = new TextView(mContext);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ScreenUtil.dpToPxInt(mContext,50));
@@ -77,24 +103,30 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     private void clickLeftTv(Object tag) {
         if(tag instanceof zhutiBean){
             zhutiBean mItemZhutiBean = (zhutiBean) tag;
+            mCurrentZhuti = mItemZhutiBean;
             Toast.makeText(mContext,""+mItemZhutiBean.getName(),Toast.LENGTH_SHORT).show();
+            if(mAdapter != null){
+                mAdapter.setmDatas(mItemZhutiBean.getGongnengBeans());
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 
-
-    private void clickResponse(String msg) {
-        String toastMsg = "";
-        if(DataManager.getInstance().getType() == 0){
-            //udp 模式
-            toastMsg = msg+" UDP"+"  "+DataManager.getInstance().getmUdpBean().toString();
-        }else if(DataManager.getInstance().getType() == 1){
-            //mqtt 模式
-            toastMsg = msg+" MQTT"+"  "+DataManager.getInstance().getmMqttBean().toString();
+    private void updateAdapterData() {
+        for(int i = 0 ; i < DataManager.getInstance().getZhutiBeans().size();i++){
+            zhutiBean searchItem = DataManager.getInstance().getZhutiBeans().get(i);
+            if(mCurrentZhuti.getUid().equals(searchItem.getUid())){
+                //找到匹配
+                if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
+                    //数据有变动
+                    mZhutis = DataManager.getInstance().getZhutiBeans();
+                    renderLeftZhutiTvs();
+                    mCurrentZhuti = searchItem;
+                    mAdapter.setmDatas(mCurrentZhuti.getGongnengBeans());
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
         }
-        if(!DataManager.getInstance().isInited){
-            toastMsg = msg+"   暂未配置UDP或MQTT参数";
-        }
-        Toast.makeText(mContext,toastMsg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -108,11 +140,20 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
             case R.id.homepage_top_header_setting_fr:
                 Intent intent = new Intent();
                 intent.setClass(mContext, AllConfigActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 break;
 
             default:
                 break;
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                updateAdapterData();
+            }
         }
     }
 
