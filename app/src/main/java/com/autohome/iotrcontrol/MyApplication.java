@@ -20,6 +20,7 @@ public class MyApplication extends Application {
         sContext = getApplicationContext();
         //启动读取sp的存储值
         DataManager.getInstance().getSpZhutiBeanData();
+        DataManager.getInstance().getSpConfigData();
     }
 
     public static Context getContext() {

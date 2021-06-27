@@ -8,6 +8,7 @@ import com.autohome.iotrcontrol.util.preference.AHPreferenceUtil;
 public class SpHelper {
     public static final String IOTRCONTROL = "iotrcontrol";
     public static final String ACTIVITY_ZHUTIBEANS = "activity_zhutibeans";
+    public static final String UDP_MQTT_CONFIG_INFOS = "udp_mqtt_config_infos";
     private static SharedPreferences mySharedPreferences = AHPreferenceUtil.getSharedPreference(MyApplication.getContext(), IOTRCONTROL);
 
     public static String getString(String key) {

@@ -63,7 +63,9 @@ public class DataManager {
         //commit之后持久化存储
         syncLocalDatas();
     }
-
+    public void syncConfigInfos(){
+        SpHelper.commitString(SpHelper.UDP_MQTT_CONFIG_INFOS,""+configToStr());
+    }
     public void syncLocalDatas() {
         SpHelper.commitString(SpHelper.ACTIVITY_ZHUTIBEANS,""+zhutiBeanToStr());
     }
@@ -85,6 +87,36 @@ public class DataManager {
         stringBuffer.append("]");
         LogUtil.d("gktest zhutiBeanToStr ==",stringBuffer.toString());
         return stringBuffer.toString();
+    }
+
+
+    private String configToStr() {
+        JSONObject obj = new JSONObject();
+        obj.put("type",getType());
+        obj.put("udp",getmUdpBean());
+        obj.put("mqtt",getmMqttBean());
+        return obj.toString();
+    }
+
+    public void getSpConfigData(){
+        String s = SpHelper.getString(SpHelper.UDP_MQTT_CONFIG_INFOS,"");
+        if(TextUtils.isEmpty(s)){
+            //启动读取sp为空，return
+            return;
+        }
+        JSONObject obj = JSONObject.parseObject(s);
+        String type = obj.getString("type");
+        UDPBean udpBean = UDPBean.parseJsonObj(obj.getJSONObject("udp"));
+        MQTTBean mqttBean = MQTTBean.parseJsonObj(obj.getJSONObject("mqtt"));
+        if(!TextUtils.isEmpty(type)){
+            setType(Integer.parseInt(type));
+        }
+        if(udpBean != null){
+            setUdpBean(udpBean);
+        }
+        if(mqttBean != null){
+            setMqttBean(mqttBean);
+        }
     }
 
     public void getSpZhutiBeanData(){

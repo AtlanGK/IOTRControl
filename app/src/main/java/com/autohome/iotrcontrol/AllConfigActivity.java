@@ -38,6 +38,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_iot_config);
         mContext = this;
         initView();
+        initDefaultConfig();
     }
 
     private void initView() {
@@ -75,6 +76,22 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
         }
     }
 
+    private void initDefaultConfig() {
+        UDPBean currentUdpBean = DataManager.getInstance().getmUdpBean();
+        if(currentUdpBean != null){
+            mUdpIpAddressEd.setText(currentUdpBean.getIpAddress());
+            mUdpPortEd.setText(currentUdpBean.getPort());
+        }
+        MQTTBean currentMqttBean = DataManager.getInstance().getmMqttBean();
+        if(currentMqttBean != null){
+            mMqttIpAddressEd.setText(currentMqttBean.getIpAddress());
+            mMqttPortEd.setText(currentMqttBean.getPort());
+            mMqttClientIDEd.setText(currentMqttBean.getClientId());
+            mMqttUsernameEd.setText(currentMqttBean.getUserName());
+            mMqttPasswordEd.setText(currentMqttBean.getPassWord());
+        }
+    }
+
     private void saveEditInfoConfirm() {
         if(state == 0) {
             UDPBean udpBean = new UDPBean();
@@ -88,7 +105,9 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             DataManager.getInstance().isInited = true;
             DataManager.getInstance().setType(0);
             Toast.makeText(mContext,"UDP配置保存成功，数据："+udpBean.toString(),Toast.LENGTH_SHORT).show();
+
             mCurrentType.setText("当前UDP生效");
+            DataManager.getInstance().syncConfigInfos();
 
         }else if(state == 1){
             MQTTBean mqttBean = new MQTTBean();
@@ -107,6 +126,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             DataManager.getInstance().setType(1);
             Toast.makeText(mContext,"MQTT配置保存成功，数据："+mqttBean.toString(),Toast.LENGTH_SHORT).show();
             mCurrentType.setText("当前MQTT生效");
+            DataManager.getInstance().syncConfigInfos();
             String serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
             int serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
             String clientId = DataManager.getInstance().getmMqttBean().clientId;

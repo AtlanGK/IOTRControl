@@ -113,20 +113,35 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     }
 
     private void updateAdapterData() {
-        for(int i = 0 ; i < DataManager.getInstance().getZhutiBeans().size();i++){
-            zhutiBean searchItem = DataManager.getInstance().getZhutiBeans().get(i);
-            if(mCurrentZhuti.getUid().equals(searchItem.getUid())){
-                //找到匹配
-                if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
-                    //数据有变动
-                    mZhutis = DataManager.getInstance().getZhutiBeans();
-                    renderLeftZhutiTvs();
+        if(mCurrentZhuti == null) {
+            //首页为空，数据null
+            if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
+                mZhutis = DataManager.getInstance().getZhutiBeans();
+                renderLeftZhutiTvs();
+                if(mZhutis != null && mZhutis.size() > 0) {
+                    mCurrentZhuti = mZhutis.get(0);
+                    mAdapter.setmDatas(mCurrentZhuti.getGongnengBeans());
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+            return;
+        }
+        if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
+            //数据有变动,重新渲染左侧
+            mZhutis = DataManager.getInstance().getZhutiBeans();
+            renderLeftZhutiTvs();
+            //遍历寻找当前的主题数据，并刷新
+            for(int i = 0 ; i < DataManager.getInstance().getZhutiBeans().size();i++){
+                zhutiBean searchItem = DataManager.getInstance().getZhutiBeans().get(i);
+                if(mCurrentZhuti.getUid().equals(searchItem.getUid())){
+                    //找到匹配
                     mCurrentZhuti = searchItem;
                     mAdapter.setmDatas(mCurrentZhuti.getGongnengBeans());
                     mAdapter.notifyDataSetChanged();
                 }
             }
         }
+
     }
 
     @Override
