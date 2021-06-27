@@ -43,8 +43,8 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.activity_iot_main);
         mContext = this;
         initView();
-        initdefaultConfig();
         initData();
+        initdefaultConfig();
     }
 
     private void initView() {
@@ -56,6 +56,21 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
 
     private void initdefaultConfig() {
         //从sp读出上次配置，并初始化mqtt client
+        if(DataManager.getInstance().getType() == 1) {
+            //如果保存的上次是mqtt配置，启动连接
+            String serverIp = DataManager.getInstance().getmMqttBean().ipAddress;
+            int serverPort = Integer.parseInt(DataManager.getInstance().getmMqttBean().port);
+            String clientId = DataManager.getInstance().getmMqttBean().clientId;
+            if (!TextUtils.isEmpty(serverIp) && serverPort > 0 && !TextUtils.isEmpty(clientId)) {
+                MQTTManager.getInstance().setMqttIpPortAndClientId(serverIp, serverPort, clientId);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        MQTTManager.getInstance().startSendMQTT();
+                    }
+                }.start();
+            }
+        }
     }
 
     private void initData() {
