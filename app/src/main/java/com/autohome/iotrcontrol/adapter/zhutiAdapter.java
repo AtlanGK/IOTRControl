@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.R;
+import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.gongnengActivity;
 import com.autohome.iotrcontrol.xuanxiangConfigActivity;
@@ -114,6 +115,7 @@ public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public void onClick(View v) {
                     if(mTV.getTag() instanceof zhutiBean){
                         zhutiBean mItemData = (zhutiBean) mTV.getTag();
+                        DataManager.getInstance().commitZhutiBeans(getmDatas());
                         Intent intent = new Intent();
                         intent.setPackage("com.autohome.iotcontrol");
                         intent.putExtra("zhuti",mItemData);
