@@ -5,24 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.data.DataManager;
+import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.util.MQTTManager;
+import com.autohome.iotrcontrol.util.ScreenUtil;
 import com.autohome.iotrcontrol.util.UDPUtils;
+
+import java.util.ArrayList;
 
 public class IOTRControlActivity extends Activity implements View.OnClickListener{
 
     private FrameLayout mSetting;
-    private TextView mTv1Open;
-    private TextView mTv1Close;
     private Context mContext;
-
-    private UDPUtils udpUtils;
-
+    private LinearLayout mLeftLL,mRightContainer;
+    private ArrayList<zhutiBean> mZhutis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,20 +34,53 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         mContext = this;
         initView();
         initdefaultConfig();
+        initData();
     }
 
     private void initView() {
         mSetting = findViewById(R.id.homepage_top_header_setting_fr);
-        mTv1Open = findViewById(R.id.activity_iot_main_right_tv1);
-        mTv1Close = findViewById(R.id.activity_iot_main_right_tv2);
         mSetting.setOnClickListener(this);
-        mTv1Open.setOnClickListener(this);
-        mTv1Close.setOnClickListener(this);
+        mLeftLL = findViewById(R.id.activity_iot_main_left_ll);
+        mRightContainer = findViewById(R.id.activity_iot_main_right_ll);
+
     }
 
     private void initdefaultConfig() {
         //从sp读出上次配置，并初始化mqtt client
     }
+
+    private void initData() {
+        mZhutis = DataManager.getInstance().getZhutiBeans();
+        renderLeftZhutiTvs();
+    }
+
+    private void renderLeftZhutiTvs() {
+        for(int i = 0;i < mZhutis.size();i++){
+            TextView tv = new TextView(mContext);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ScreenUtil.dpToPxInt(mContext,50));
+            tv.setLayoutParams(params);
+            params.setMargins(10,10,10,10);
+            tv.setText(mZhutis.get(i).getName());
+            tv.setGravity(Gravity.CENTER);
+            tv.setBackgroundColor(getResources().getColor(R.color.color_660e1029));
+            tv.setTag(mZhutis.get(i));
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickLeftTv(v.getTag());
+                }
+            });
+            mLeftLL.addView(tv);
+        }
+    }
+
+    private void clickLeftTv(Object tag) {
+        if(tag instanceof zhutiBean){
+            zhutiBean mItemZhutiBean = (zhutiBean) tag;
+            Toast.makeText(mContext,""+mItemZhutiBean.getName(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void clickResponse(String msg) {
         String toastMsg = "";
@@ -67,79 +104,13 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     }
     @Override
     public void onClick(View v) {
-        String serverIp;
-        int serverPort;
-        String clientId;
         switch (v.getId()) {
             case R.id.homepage_top_header_setting_fr:
                 Intent intent = new Intent();
                 intent.setClass(mContext, AllConfigActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.activity_iot_main_right_tv1:
-                if(DataManager.getInstance().getType() == 0) {
-                    if(null == DataManager.getInstance().getmUdpBean()){
-                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
-                    serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
-                    if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
-                        udpUtils = new UDPUtils(serverIp, serverPort);
-                        clickResponse("点击投影打开");
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (udpUtils != null) {
-                                    udpUtils.sendControInfo("_Projector_on_");
-                                } else {
-                                    //log message
-                                }
-                            }
-                        }.start();
-                    } else {
-                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    if(null == DataManager.getInstance().getmMqttBean()){
-                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    MQTTManager.getInstance().sendMessage("Projector","on");
-                }
-                break;
-            case R.id.activity_iot_main_right_tv2:
-                if(DataManager.getInstance().getType() == 0) {
-                    if(null == DataManager.getInstance().getmUdpBean()){
-                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    serverIp = DataManager.getInstance().getmUdpBean().ipAddress;
-                    serverPort = Integer.parseInt(DataManager.getInstance().getmUdpBean().port);
-                    if (!TextUtils.isEmpty(serverIp) && serverPort > 0) {
-                        udpUtils = new UDPUtils(serverIp, serverPort);
-                        clickResponse("点击投影关闭");
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (udpUtils != null) {
-                                    udpUtils.sendControInfo("_Projector_off_");
-                                } else {
-                                    //log message
-                                }
-                            }
-                        }.start();
-                    } else {
-                        Toast.makeText(mContext, "需要先配置udp参数才能发送数据", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    if(null == DataManager.getInstance().getmMqttBean()){
-                        Toast.makeText(mContext, "需要先配置MQTT参数才能发送数据", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    MQTTManager.getInstance().sendMessage("Projector","off");
-                }
-                break;
+
             default:
                 break;
         }

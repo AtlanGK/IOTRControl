@@ -68,13 +68,13 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:gravity="center"
-                android:text="主题1"
-                android:textSize="20sp"
-                android:background="#66000000"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="120dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="主题1"-->
+<!--                android:textSize="20sp"-->
+<!--                android:background="#66000000"/>-->
 
         </LinearLayout>
 
@@ -84,49 +84,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:background="#11000000">
 
-                <TextView
-                    android:id="@+id/activity_iot_main_right_tv0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center"
-                    android:text="投影"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/activity_iot_main_right_tv1"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/activity_iot_main_right_tv0"
-                    android:background="@drawable/border_12dp_3c7eff"
-                    android:gravity="center"
-                    android:text="开"
-                    android:textColor="@color/color_ededed"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/activity_iot_main_right_tv2"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/activity_iot_main_right_tv1"
-                    android:background="@drawable/border_12dp_3c7eff"
-                    android:gravity="center"
-                    android:text="关"
-                    android:textColor="@color/color_ededed"
-                    android:textSize="20sp" />
-
-
-            </RelativeLayout>
 
         </LinearLayout>
     </LinearLayout>

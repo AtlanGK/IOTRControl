@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:name="com.autohome.iotrcontrol.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
         <activity android:name=".IOTRControlActivity">
 
             <intent-filter>
