@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.R;
+import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.xuanxiangActivity;
@@ -123,6 +124,7 @@ public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 public void onClick(View v) {
                     if(mTV.getTag() instanceof gongnengBean){
                         gongnengBean mItemData = (gongnengBean) mTV.getTag();
+                        saveGongnengToBelongZhuti();
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setClass(mContext, xuanxiangActivity.class);
@@ -256,6 +258,28 @@ public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 notifyDataSetChanged();
             }
         }
+    }
+
+    private void saveGongnengToBelongZhuti() {
+        int findMatchPos = -1;
+        findMatchPos = findMatchGongnengBeanPos();
+        if(findMatchPos != -1) {
+            //找到了match 主题数据，设置功能bean，并保存
+            DataManager.getInstance().getZhutiBeans().get(findMatchPos).setGongnengBeans(getmDatas());
+            DataManager.getInstance().syncLocalDatas();
+        }
+    }
+
+    private int findMatchGongnengBeanPos() {
+        int findMatchPos = -1;
+        int spZhutiLength = DataManager.getInstance().getZhutiBeans().size();
+        for(int i = 0;i < spZhutiLength;i++){
+            String spItemUid = DataManager.getInstance().getZhutiBeans().get(i).getUid();
+            if(spItemUid.equals(mBelongZhuti.getUid())){
+                findMatchPos = i;
+            }
+        }
+        return findMatchPos;
     }
 
 }
