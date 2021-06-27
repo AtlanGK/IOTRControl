@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.autohome.iotrcontrol.R;
+import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.xuanxiangBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
 import com.autohome.iotrcontrol.xuanxiangConfigActivity;
@@ -22,6 +23,8 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private Context mContext;
     private ArrayList<xuanxiangBean> mDatas;
+    private zhutiBean mBelongZhuti;
+    private gongnengBean mBelongGongneng;
 
     public xuanxiangAdapter(Context context) {
         mContext = context;
@@ -38,6 +41,22 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setmDatas(ArrayList<xuanxiangBean> datas) {
         this.mDatas = datas;
+    }
+
+    public zhutiBean getmBelongZhuti() {
+        return mBelongZhuti;
+    }
+
+    public void setmBelongZhuti(zhutiBean mBelongZhuti) {
+        this.mBelongZhuti = mBelongZhuti;
+    }
+
+    public gongnengBean getmBelongGongneng() {
+        return mBelongGongneng;
+    }
+
+    public void setmBelongGongneng(gongnengBean mBelongGongneng) {
+        this.mBelongGongneng = mBelongGongneng;
     }
 
     @Override
@@ -87,6 +106,10 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
+                        intent.setPackage("com.autohome.iotcontrol");
+                        intent.putExtra("xuanxiang",mItemData);
+                        intent.putExtra("gongneng",mBelongGongneng);
+                        intent.putExtra("zhuti",mBelongZhuti);
                         intent.setClass(mContext, xuanxiangConfigActivity.class);
                         mContext.startActivity(intent);
                     }

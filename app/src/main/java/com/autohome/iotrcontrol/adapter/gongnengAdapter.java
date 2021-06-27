@@ -98,6 +98,9 @@ public class gongnengAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setClass(mContext, xuanxiangActivity.class);
+                        intent.setPackage("com.autohome.iotcontrol");
+                        intent.putExtra("gongneng",mItemData);
+                        intent.putExtra("zhuti",mBelongZhuti);
                         mContext.startActivity(intent);
                     }
 

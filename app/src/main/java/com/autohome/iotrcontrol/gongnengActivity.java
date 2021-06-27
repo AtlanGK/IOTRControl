@@ -112,6 +112,7 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
                 Toast.makeText(mContext,"保存成功 数据长度=="+mAdapter.getmDatas().size(),Toast.LENGTH_SHORT).show();
                 break;
             case R.id.activity_gongneng_bottom_cancel_tv:
+                finish();
                 break;
             case R.id.activity_gongneng_bottom_add_tv:
                 addNewGongNengItem();

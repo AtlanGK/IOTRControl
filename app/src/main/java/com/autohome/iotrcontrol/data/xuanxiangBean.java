@@ -9,9 +9,9 @@ import java.util.UUID;
 public class xuanxiangBean implements recyclerListItemBean, Serializable {
     String name;
     public String uid;
-    String udpMessage;
-    String mqttTopic;
-    String mqttMessage;
+    String udpMessage="";
+    String mqttTopic="";
+    String mqttMessage="";
 
     public xuanxiangBean(){
         uid = UUID.randomUUID().toString();
