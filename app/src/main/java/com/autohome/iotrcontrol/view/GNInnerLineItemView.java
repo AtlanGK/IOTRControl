@@ -40,6 +40,9 @@ public class GNInnerLineItemView extends LinearLayout {
                     case 1:
                         Toast.makeText(mContext, "发送udp参数 "+mUdpmessage, Toast.LENGTH_SHORT).show();
                         break;
+                    case 2:
+                        Toast.makeText(mContext, "检查该选项的udp参数，当前为空 ", Toast.LENGTH_SHORT).show();
+                        break;
                     default:
                         break;
                 }}};
@@ -69,6 +72,8 @@ public class GNInnerLineItemView extends LinearLayout {
                                         udpUtils.sendControInfo(udpmessage);
                                         mUdpmessage = udpmessage;
                                         mHandler.sendEmptyMessage(1);
+                                    }else{
+                                        mHandler.sendEmptyMessage(2);
                                     }
                                 } else {
                                     //log message
@@ -88,6 +93,8 @@ public class GNInnerLineItemView extends LinearLayout {
                     if(!TextUtils.isEmpty(mqttTopic) && !TextUtils.isEmpty(mqttMessage)) {
                         MQTTManager.getInstance().sendMessage(mqttTopic, mqttMessage);
                         Toast.makeText(mContext, "发送mqtt参数 "+mqttTopic + " " +mqttMessage, Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mContext, "检查该选项的mqtt参数，当前为空 ", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -116,6 +123,8 @@ public class GNInnerLineItemView extends LinearLayout {
                                         udpUtils.sendControInfo(udpmessage);
                                         mUdpmessage = udpmessage;
                                         mHandler.sendEmptyMessage(1);
+                                    }else{
+                                        mHandler.sendEmptyMessage(2);
                                     }
                                 } else {
                                     //log message
@@ -135,6 +144,8 @@ public class GNInnerLineItemView extends LinearLayout {
                     if(!TextUtils.isEmpty(mqttTopic) && !TextUtils.isEmpty(mqttMessage)) {
                         MQTTManager.getInstance().sendMessage(mqttTopic, mqttMessage);
                         Toast.makeText(mContext, "发送mqtt参数 "+mqttTopic + " " +mqttMessage, Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mContext, "检查该选项的mqtt参数，当前为空 ", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
