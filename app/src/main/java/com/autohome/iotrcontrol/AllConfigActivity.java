@@ -197,7 +197,7 @@ public class AllConfigActivity extends Activity implements View.OnClickListener{
             case R.id.config_bottom_cancel_tv:
                 this.setResult(-1);
                 this.finish();
-                Toast.makeText(mContext,"取消",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext,"取消",Toast.LENGTH_SHORT).show();
                 //do cancel operation
                 break;
             default:

@@ -114,7 +114,6 @@ public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public void onClick(View v) {
                     if(mTV.getTag() instanceof zhutiBean){
                         zhutiBean mItemData = (zhutiBean) mTV.getTag();
-                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setPackage("com.autohome.iotcontrol");
                         intent.putExtra("zhuti",mItemData);

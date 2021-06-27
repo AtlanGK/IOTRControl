@@ -104,7 +104,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
         if(tag instanceof zhutiBean){
             zhutiBean mItemZhutiBean = (zhutiBean) tag;
             mCurrentZhuti = mItemZhutiBean;
-            Toast.makeText(mContext,""+mItemZhutiBean.getName(),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext,""+mItemZhutiBean.getName(),Toast.LENGTH_SHORT).show();
             if(mAdapter != null){
                 mAdapter.setmDatas(mItemZhutiBean.getGongnengBeans());
                 mAdapter.notifyDataSetChanged();
@@ -126,7 +126,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
             }
             return;
         }
-        if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
+//        if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
             //数据有变动,重新渲染左侧
             mZhutis = DataManager.getInstance().getZhutiBeans();
             renderLeftZhutiTvs();
@@ -140,7 +140,7 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
                     mAdapter.notifyDataSetChanged();
                 }
             }
-        }
+//        }
 
     }
 

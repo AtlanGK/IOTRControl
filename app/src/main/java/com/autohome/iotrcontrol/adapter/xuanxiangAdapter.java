@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.autohome.iotrcontrol.R;
 import com.autohome.iotrcontrol.data.gongnengBean;
@@ -99,6 +100,33 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mTVConfirm = (TextView) itemView.findViewById(R.id.item_confirm_tv);
             mTVCancel =  (TextView) itemView.findViewById(R.id.item_cancel_tv);
 
+            mTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mTV.getTag() instanceof xuanxiangBean){
+                        mTVEdit.setText(mTV.getText());
+                        mTVEdit.setVisibility   (View.VISIBLE);
+                        mTVConfirm.setVisibility(View.VISIBLE);
+                        mTVCancel.setVisibility (View.VISIBLE);
+                        mTV.setVisibility       (View.INVISIBLE);
+                        mTVUp.setVisibility     (View.INVISIBLE);
+                        mTVDown.setVisibility   (View.INVISIBLE);
+                        mTVConfig.setVisibility (View.INVISIBLE);
+                        mTVDele.setVisibility   (View.INVISIBLE);
+                        mTVEdit.setSelectAllOnFocus(true);
+                        mTVEdit.requestFocus();
+                    }
+                }
+            });
+            mTVDele.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mTV.getTag() instanceof xuanxiangBean){
+                        xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                        removeSelectedItemBean(mItemData);
+                    }
+                }
+            });
             mTVConfig.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,29 +144,31 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 }
             });
-            mTV.setOnClickListener(new View.OnClickListener() {
+            mTVUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mTV.getTag() instanceof zhutiBean){
-                        mTVEdit.setText(mTV.getText());
-                        mTVEdit.setVisibility   (View.VISIBLE);
-                        mTVConfirm.setVisibility(View.VISIBLE);
-                        mTVCancel.setVisibility (View.VISIBLE);
-                        mTV.setVisibility       (View.INVISIBLE);
-                        mTVUp.setVisibility     (View.INVISIBLE);
-                        mTVDown.setVisibility   (View.INVISIBLE);
-                        mTVConfig.setVisibility (View.INVISIBLE);
-                        mTVDele.setVisibility   (View.INVISIBLE);
-                        mTVEdit.setSelectAllOnFocus(true);
-                        mTVEdit.requestFocus();
+                    if(mTV.getTag() instanceof xuanxiangBean){
+                        xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                        swapSelectedItemBean(mItemData,"up");
+                    }
+                }
+            });
+            mTVDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mTV.getTag() instanceof xuanxiangBean){
+                        xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                        swapSelectedItemBean(mItemData,"down");
                     }
                 }
             });
             mTVConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mTV.getTag() instanceof zhutiBean){
+                    if(mTV.getTag() instanceof xuanxiangBean){
                         mTV.setText(mTVEdit.getText());
+                        xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                        modifySelectedItemBeanName(mItemData,mTVEdit.getText().toString());
                         mTVEdit.setVisibility   (View.INVISIBLE);
                         mTVConfirm.setVisibility(View.INVISIBLE);
                         mTVCancel.setVisibility (View.INVISIBLE);
@@ -153,7 +183,7 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mTVCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mTV.getTag() instanceof zhutiBean){
+                    if(mTV.getTag() instanceof xuanxiangBean){
                         //mTVEdit.setText(mTV.getText());
                         mTVEdit.setVisibility   (View.INVISIBLE);
                         mTVConfirm.setVisibility(View.INVISIBLE);
@@ -167,6 +197,74 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
+        }
+    }
+
+    private void swapSelectedItemBean(xuanxiangBean itemData,String direc) {
+        if(itemData == null)
+            return;
+        int findPos = -1;
+        int swapPos = -1;
+        for(int i = 0 ;i < mDatas.size();i++){
+            if(mDatas.get(i).uid.equals(itemData.uid)){
+                findPos = i;
+            }
+        }
+        if(findPos != -1){
+            //找到了匹配位置
+            if(direc.equals("up")) {
+                swapPos = findPos-1;
+                if (findPos == 0) {
+                    //向上交换，第一个
+                    Toast.makeText(mContext, "已经是第一个了", Toast.LENGTH_SHORT).show();
+                } else {
+                    swapXuanxiangBean(findPos, swapPos);
+                }
+            }else if(direc.equals("down")){
+                swapPos = findPos+1;
+                if (findPos == mDatas.size() -1) {
+                    //向下交换，最后一个
+                    Toast.makeText(mContext, "已经最后一个了", Toast.LENGTH_SHORT).show();
+                } else {
+                    swapXuanxiangBean(findPos, swapPos);
+                }
+            }
+        }
+    }
+
+    private void swapXuanxiangBean(int findPos, int swapPos) {
+        if(findPos < 0 || findPos > mDatas.size())
+            return;
+        if(swapPos < 0 || swapPos > mDatas.size())
+            return;
+        xuanxiangBean mTempBean = mDatas.get(findPos);
+        mDatas.set(findPos,mDatas.get(swapPos));
+        mDatas.set(swapPos,mTempBean);
+        mTempBean = null;
+        notifyDataSetChanged();
+    }
+
+
+    private void removeSelectedItemBean(xuanxiangBean itemData) {
+        if(itemData == null)
+            return;
+        for(int i = 0 ;i < mDatas.size();i++){
+            if(mDatas.get(i).uid.equals(itemData.uid)){
+                //删除选中的item
+                mDatas.remove(i);
+                notifyDataSetChanged();
+            }
+        }
+    }
+    private void modifySelectedItemBeanName(xuanxiangBean itemData,String newName) {
+        if(itemData == null)
+            return;
+        for(int i = 0 ;i < mDatas.size();i++){
+            if(mDatas.get(i).uid.equals(itemData.uid)){
+                //确认修改名字，找到对应的item，改变name
+                mDatas.get(i).setName(newName);
+                notifyDataSetChanged();
+            }
         }
     }
 
