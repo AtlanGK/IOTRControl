@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autohome.iotrcontrol.R;
+import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.xuanxiangBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
@@ -132,6 +133,7 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     if(mTV.getTag() instanceof xuanxiangBean){
                         xuanxiangBean mItemData = (xuanxiangBean) mTV.getTag();
+                        saveXuanxiangToBelongGongneng();
 //                        Toast.makeText(mContext,mItemData.getName()+"**",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setPackage("com.autohome.iotcontrol");
@@ -266,6 +268,45 @@ public class xuanxiangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 notifyDataSetChanged();
             }
         }
+    }
+
+    private void saveXuanxiangToBelongGongneng() {
+        int findMatchZhutiPos = -1;
+        int findMatchGongnengPos = -1;
+        try {
+            findMatchZhutiPos = findMatchZhutiBeanPos();
+            findMatchGongnengPos = findMatchGongnengBeanPos(DataManager.getInstance().getZhutiBeans().get(findMatchZhutiPos));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(findMatchZhutiPos != -1 && findMatchGongnengPos != -1){
+            //找到了匹配位置
+            DataManager.getInstance().getZhutiBeans().get(findMatchZhutiPos).getGongnengBeans().get(findMatchGongnengPos).setXuanxiangBeans(getmDatas());
+            DataManager.getInstance().syncLocalDatas();
+        }
+
+    }
+    private int findMatchZhutiBeanPos() {
+        int findMatchPos = -1;
+        int spZhutiLength = DataManager.getInstance().getZhutiBeans().size();
+        for(int i = 0;i < spZhutiLength;i++){
+            String spItemUid = DataManager.getInstance().getZhutiBeans().get(i).getUid();
+            if(spItemUid.equals(mBelongZhuti.getUid())){
+                findMatchPos = i;
+            }
+        }
+        return findMatchPos;
+    }
+    private int findMatchGongnengBeanPos(zhutiBean mZhutiData) {
+        int findMatchPos = -1;
+        int spGongnengLength = mZhutiData.getGongnengBeans().size();
+        for(int i = 0;i < spGongnengLength;i++){
+            String spItemUid = mZhutiData.getGongnengBeans().get(i).getUid();
+            if(spItemUid.equals(mBelongGongneng.getUid())){
+                findMatchPos = i;
+            }
+        }
+        return findMatchPos;
     }
 
 }
