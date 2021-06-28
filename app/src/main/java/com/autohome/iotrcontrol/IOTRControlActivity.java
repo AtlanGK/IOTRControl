@@ -122,8 +122,8 @@ public class IOTRControlActivity extends FragmentActivity implements View.OnClic
                 mZhutis = DataManager.getInstance().getZhutiBeans();
                 if(mZhutis != null && mZhutis.size() > 0) {
                     mCurrentZhuti = mZhutis.get(0);
-                    mAdapter.setmDatas(mZhutis);
-                    mAdapter.notifyDataSetChanged();
+//                    mAdapter.setmDatas(mZhutis,true);
+//                    mAdapter.notifyDataSetChanged();
                 }
             }
             return;
