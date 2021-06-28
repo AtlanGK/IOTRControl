@@ -7,33 +7,43 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/view_gn_inner_line_tv1"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/border_12dp_3c7eff"
             android:gravity="center"
-            android:text="开"
-            android:textColor="@color/color_ededed"
-            android:textSize="12sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view_gn_inner_line_tv2"
+            <TextView
+                android:id="@+id/view_gn_inner_line_tv1"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/border_8dp_fd785c"
+                android:gravity="center"
+                android:text="开"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/textsize_14" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/border_12dp_3c7eff"
             android:gravity="center"
-            android:text="关"
-            android:textColor="@color/color_ededed"
-            android:textSize="12sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/view_gn_inner_line_tv2"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/border_8dp_fd785c"
+                android:gravity="center"
+                android:text="关"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/textsize_14" />
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -16,4 +16,9 @@
     <color name="color_660e1029">#660E1029</color>
     <!--    <color name="half_transparent">#E0070A35</color>-->
     <color name="half_transparent">#DD070A35</color>
+    <color name="SlateOrange">#fd785c</color>
+
+    <color name="red">#FF0000</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
 </resources>

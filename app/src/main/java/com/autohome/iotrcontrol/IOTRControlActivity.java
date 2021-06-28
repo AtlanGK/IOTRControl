@@ -13,30 +13,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
+import com.autohome.iotrcontrol.adapter.MyPagerAdapter;
 import com.autohome.iotrcontrol.adapter.shouyeGNAdapter;
 import com.autohome.iotrcontrol.data.DataManager;
 import com.autohome.iotrcontrol.data.gongnengBean;
 import com.autohome.iotrcontrol.data.zhutiBean;
+import com.autohome.iotrcontrol.util.LogUtil;
 import com.autohome.iotrcontrol.util.MQTTManager;
 import com.autohome.iotrcontrol.util.ScreenUtil;
 import com.autohome.iotrcontrol.util.UDPUtils;
+import com.autohome.iotrcontrol.view.RatioLinearLayout;
 
 import java.util.ArrayList;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-public class IOTRControlActivity extends Activity implements View.OnClickListener{
+public class IOTRControlActivity extends FragmentActivity implements View.OnClickListener{
 
     private FrameLayout mSetting;
+    private RatioLinearLayout mTopBg;
     private Context mContext;
-    private LinearLayout mLeftLL;
-    private RecyclerView mRecyclerView;
-    private shouyeGNAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
     private ArrayList<zhutiBean> mZhutis;
     private ArrayList<gongnengBean> mCurrentGongnengs;
     private zhutiBean mCurrentZhuti;
+    private PagerSlidingTabStrip mTabs;
+    private ViewPager mViewPager;
+    private MyPagerAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +56,10 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
     private void initView() {
         mSetting = findViewById(R.id.homepage_top_header_setting_fr);
         mSetting.setOnClickListener(this);
-        mLeftLL = findViewById(R.id.activity_iot_main_left_ll);
-        mRecyclerView = findViewById(R.id.activity_shouye_recyclerview);
+        mTopBg = findViewById(R.id.homepage_top_header_bg);
+        mTabs = findViewById(R.id.homepage_mid_tabs);
+        mViewPager = findViewById(R.id.homepage_main_pager);
+
     }
 
     private void initdefaultConfig() {
@@ -75,56 +83,36 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
 
     private void initData() {
         mZhutis = DataManager.getInstance().getZhutiBeans();
-        renderLeftZhutiTvs();
         if(null != mZhutis && mZhutis.size() >0) {
             mCurrentZhuti= mZhutis.get(0);
             mCurrentGongnengs = mZhutis.get(0).getGongnengBeans();
         }
-        if(mCurrentGongnengs != null && mCurrentGongnengs.size() > 0){
-            mAdapter = new shouyeGNAdapter(mContext,mCurrentGongnengs);
-        }else{
-            mAdapter = new shouyeGNAdapter(mContext);
-        }
-        //创建线性布局
-        mLayoutManager = new LinearLayoutManager(this);
-        //垂直方向
-        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        //给RecyclerView设置布局管理器
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-    }
+        mAdapter = new MyPagerAdapter(getSupportFragmentManager(),mZhutis);
+        mViewPager.setAdapter(mAdapter);
+        mTabs.setIndicatorColor(getResources().getColor(R.color.SlateOrange));
+        mTabs.setTextColor(getResources().getColor(R.color.SlateOrange));
+        mTabs.setTextSize(40);
+        mTabs.setShouldExpand(true);
+        mTabs.setIndicatorHeight(ScreenUtil.dpToPxInt(mContext,3));
+        mTabs.setViewPager(mViewPager);
+        mTabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
 
-    private void renderLeftZhutiTvs() {
-        mLeftLL.removeAllViews();
-        for(int i = 0;i < mZhutis.size();i++){
-            TextView tv = new TextView(mContext);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ScreenUtil.dpToPxInt(mContext,50));
-            tv.setLayoutParams(params);
-            params.setMargins(10,10,10,10);
-            tv.setText(mZhutis.get(i).getName());
-            tv.setGravity(Gravity.CENTER);
-            tv.setBackgroundColor(getResources().getColor(R.color.color_660e1029));
-            tv.setTag(mZhutis.get(i));
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickLeftTv(v.getTag());
-                }
-            });
-            mLeftLL.addView(tv);
-        }
-    }
-
-    private void clickLeftTv(Object tag) {
-        if(tag instanceof zhutiBean){
-            zhutiBean mItemZhutiBean = (zhutiBean) tag;
-            mCurrentZhuti = mItemZhutiBean;
-//            Toast.makeText(mContext,""+mItemZhutiBean.getName(),Toast.LENGTH_SHORT).show();
-            if(mAdapter != null){
-                mAdapter.setmDatas(mItemZhutiBean.getGongnengBeans());
-                mAdapter.notifyDataSetChanged();
             }
-        }
+
+            @Override
+            public void onPageSelected(int position) {
+                LogUtil.d("GKTEST","onPageSelected =="+position);
+                mCurrentZhuti = mAdapter.getmDatas().get(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void updateAdapterData() {
@@ -132,31 +120,19 @@ public class IOTRControlActivity extends Activity implements View.OnClickListene
             //首页为空，数据null
             if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
                 mZhutis = DataManager.getInstance().getZhutiBeans();
-                renderLeftZhutiTvs();
                 if(mZhutis != null && mZhutis.size() > 0) {
                     mCurrentZhuti = mZhutis.get(0);
-                    mAdapter.setmDatas(mCurrentZhuti.getGongnengBeans());
+                    mAdapter.setmDatas(mZhutis);
                     mAdapter.notifyDataSetChanged();
                 }
             }
             return;
         }
-//        if(DataManager.getInstance().getZhutiBeans().hashCode() != mZhutis.hashCode()) {
-            //数据有变动,重新渲染左侧
-            mZhutis = DataManager.getInstance().getZhutiBeans();
-            renderLeftZhutiTvs();
-            //遍历寻找当前的主题数据，并刷新
-            for(int i = 0 ; i < DataManager.getInstance().getZhutiBeans().size();i++){
-                zhutiBean searchItem = DataManager.getInstance().getZhutiBeans().get(i);
-                if(mCurrentZhuti.getUid().equals(searchItem.getUid())){
-                    //找到匹配
-                    mCurrentZhuti = searchItem;
-                    mAdapter.setmDatas(mCurrentZhuti.getGongnengBeans());
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-//        }
-
+        mZhutis = DataManager.getInstance().getZhutiBeans();
+        if(mZhutis != null && mZhutis.size() > 0) {
+            mAdapter.setmDatas(mZhutis);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -2,85 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <TextView
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="主页面"
-            android:textSize="20sp"
-            android:layout_centerVertical="true"/>
-        <FrameLayout
-            android:id="@+id/homepage_top_header_setting_fr"
-            android:layout_width="115dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp">
-
-            <ImageView
-                android:id="@+id/homepage_top_header_setting_bg"
-                android:layout_width="115dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/border_30dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/settingpage_cur_bg" />
-
-            <LinearLayout
-                android:layout_width="115dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/border_30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="31dp"
-                    android:src="@drawable/setting_icon" />
-
-                <TextView
-                    android:id="@+id/homepage_top_header_setting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:gravity="center"
-                    android:text="@string/setting"
-                    android:textColor="@color/color_ededed"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </FrameLayout>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <ScrollView
-            android:layout_width="80dp"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/activity_iot_main_left_ll"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            </LinearLayout>
-        </ScrollView>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activity_shouye_recyclerview"
+        android:layout_height="wrap_content">
+        <com.autohome.iotrcontrol.view.RatioLinearLayout
+            android:id="@+id/homepage_top_header_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bg"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp"
+                android:layout_centerVertical="true"/>
+            <FrameLayout
+                android:id="@+id/homepage_top_header_setting_fr"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="115dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_30dp"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="31dp"
+                        android:src="@drawable/setting_icon" />
+
+                </LinearLayout>
+            </FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/homepage_mid_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/homepage_main_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+    </androidx.viewpager.widget.ViewPager>
+
 
 </LinearLayout>
