@@ -58,6 +58,7 @@ public class gongnengActivity extends Activity implements View.OnClickListener{
     private void initData() {
         mBelongZhuti = (zhutiBean) getIntent().getSerializableExtra("zhuti");
         LogUtil.d("gktest","传入的主题bean ="+mBelongZhuti.toString());
+        mTitle.setText(mBelongZhuti.getName());
         mGongNengBeans = findMatchGongnengBeans();
         if(null != mGongNengBeans && mGongNengBeans.size() >0) {
             mAdapter = new gongnengAdapter(mContext,mGongNengBeans);

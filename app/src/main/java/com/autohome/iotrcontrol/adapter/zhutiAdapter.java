@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -97,6 +100,8 @@ public class zhutiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         mTVDele.setVisibility   (View.INVISIBLE);
                         mTVEdit.setSelectAllOnFocus(true);
                         mTVEdit.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(mTVEdit, InputMethodManager.SHOW_IMPLICIT);
                     }
                 }
             });

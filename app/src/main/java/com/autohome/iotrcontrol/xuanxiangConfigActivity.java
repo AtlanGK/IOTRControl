@@ -37,6 +37,7 @@ public class xuanxiangConfigActivity extends Activity implements View.OnClickLis
         mBelongGongneng = (gongnengBean) getIntent().getSerializableExtra("gongneng");
         mBelongXuanxiang = (xuanxiangBean) getIntent().getSerializableExtra("xuanxiang");
 
+        mTitle.setText(mBelongZhuti.getName()+"/"+mBelongGongneng.getName()+"/"+mBelongXuanxiang.getName());
         mUdpMessage.setText(mBelongXuanxiang.getUdpMessage());
         mMqttTopic.setText(mBelongXuanxiang.getMqttTopic());
         mMqttMessage.setText(mBelongXuanxiang.getMqttMessage());

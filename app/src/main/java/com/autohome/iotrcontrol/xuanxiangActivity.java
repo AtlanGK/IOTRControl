@@ -77,6 +77,7 @@ public class xuanxiangActivity extends Activity implements View.OnClickListener{
 
         mBelongZhuti = (zhutiBean) getIntent().getSerializableExtra("zhuti");
         mBelongGongneng = (gongnengBean) getIntent().getSerializableExtra("gongneng");
+        mTitle.setText(mBelongZhuti.getName()+"/"+mBelongGongneng.getName());
         mXuanXiangBeans = mBelongGongneng.getXuanxiangBeans();
         if(null != mXuanXiangBeans && mXuanXiangBeans.size() > 0) {
             mAdapter = new xuanxiangAdapter(mContext,mXuanXiangBeans);
