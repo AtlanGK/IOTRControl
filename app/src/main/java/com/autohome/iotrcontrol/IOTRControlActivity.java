@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ public class IOTRControlActivity extends FragmentActivity implements View.OnClic
 
     private FrameLayout mSetting;
     private RatioLinearLayout mTopBg;
+    private EditText mPassET;
     private Context mContext;
     private ArrayList<zhutiBean> mZhutis;
     private ArrayList<gongnengBean> mCurrentGongnengs;
@@ -59,7 +63,28 @@ public class IOTRControlActivity extends FragmentActivity implements View.OnClic
         mTopBg = findViewById(R.id.homepage_top_header_bg);
         mTabs = findViewById(R.id.homepage_mid_tabs);
         mViewPager = findViewById(R.id.homepage_main_pager);
+        mPassET = findViewById(R.id.homepage_top_header_pass);
+        mPassET.setVisibility(View.GONE);
+        mPassET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("admin123456")){
+                    Intent intent = new Intent();
+                    intent.setClass(mContext, AllConfigActivity.class);
+                    startActivityForResult(intent,1);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void initdefaultConfig() {
@@ -136,6 +161,14 @@ public class IOTRControlActivity extends FragmentActivity implements View.OnClic
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        if(null != mPassET){
+            mPassET.setText("");
+            mPassET.setVisibility(View.GONE);
+        }
+    }
+    @Override
     public void onDestroy(){
         MQTTManager.getInstance().closeMQTT();
         super.onDestroy();
@@ -144,9 +177,7 @@ public class IOTRControlActivity extends FragmentActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.homepage_top_header_setting_fr:
-                Intent intent = new Intent();
-                intent.setClass(mContext, AllConfigActivity.class);
-                startActivityForResult(intent,1);
+                mPassET.setVisibility(View.VISIBLE);
                 break;
 
             default:

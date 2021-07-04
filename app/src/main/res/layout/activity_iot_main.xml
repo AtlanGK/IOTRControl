@@ -24,6 +24,12 @@
                 android:text=""
                 android:textSize="20sp"
                 android:layout_centerVertical="true"/>
+
+            <EditText
+                android:id="@+id/homepage_top_header_pass"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:hint="请输入密码admin123456"></EditText>
             <FrameLayout
                 android:id="@+id/homepage_top_header_setting_fr"
                 android:layout_width="115dp"
